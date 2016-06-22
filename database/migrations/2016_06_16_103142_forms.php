@@ -15,6 +15,7 @@ class Forms extends Migration
         Schema::create( 'forms', function ( Blueprint $table ) {
             $table->increments( 'id' );
             $table->text( 'body' );
+            $table->string( 'plugin' );
             $table->timestamps();
             $table->softDeletes();
         } );
