@@ -21,9 +21,12 @@
 卸载成功
 
 如果还有问题...
+
 看下数据库链接
 composer dumpautoload
 composer update
 artisan key:generate
+
+如果还有问题,就我擦了
 
 后台模版基于 cockpit ,系统开发 Laravel 5.2 + vue
