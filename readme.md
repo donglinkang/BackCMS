@@ -20,5 +20,10 @@
 访问 http://xxxxx/install/uninstall/卸载密码
 卸载成功
 
+如果还有问题...
+看下数据库链接
+composer dumpautoload
+composer update
+artisan key:generate
 
 后台模版基于 cockpit ,系统开发 Laravel 5.2 + vue
