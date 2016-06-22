@@ -53,7 +53,7 @@
                             {{ $form->id }}
                         </td>
                         <td>
-                            @prettyJSON($form->body)
+                            @PrettyJSON($form->body)
                         </td>
                         <td>{{ $form->created_at }}</td>
                         <td>

@@ -85,9 +85,9 @@ class Plugins
 
     public function view( $name, $dataSourceView )
     {
-        $name = lcfirst( $name );
+        $name = ucfirst( $name );
 
-        if ( $this->exists( lcfirst( $name ) ) ) {
+        if ( $this->exists( $name ) ) {
             $dataSourceView = dirname( __FILE__ ) . DIRECTORY_SEPARATOR . ucfirst( $name ) . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . $dataSourceView;
 
             /*// let's add /app/custom_views via namespace

@@ -12,7 +12,9 @@ class FormController extends Controller
 
     public function anyPlugin( $name )
     {
-        \Plugins::register( $name, '\\App\\Plugins\\' . ucfirst( $name ) . '\\' . ucfirst( $name ) );
+        $name = ucfirst( $name );
+
+        \Plugins::register( $name, '\\App\\Plugins\\' . $name . '\\' . $name );
 
         return \Plugins::call( $name, [ $name ] );
     }

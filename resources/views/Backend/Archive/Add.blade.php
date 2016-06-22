@@ -130,7 +130,7 @@
                                 {{--<div class="uk-text-small uk-text-danger uk-float-right uk-animation-slide-top">提示</div>--}}
                                 <div class="uk-margin-top">
                                     @Tags([
-                                    'type' => $attribute->type,
+                                        'type' => $attribute->type,
                                         'label' => $attribute->label,
                                         'attach' => $attribute
                                     ])

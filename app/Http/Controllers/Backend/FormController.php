@@ -120,16 +120,17 @@ class FormController extends BackendController
 
         $formsField = \App\FormField::find( $id );
         $forms      = \App\Form::wherePlugin( $formsField->plugin )->get();
+        $plugin     = ucfirst( $formsField->plugin );
 
-        \Plugins::register( $formsField->plugin, '\\App\\Plugins\\' . ucfirst( $formsField->plugin ) . '\\' . ucfirst( $formsField->plugin ) );
+        \Plugins::register( $plugin, '\\App\\Plugins\\' . $plugin . '\\' . $plugin );
 
-        $dataSourceView = \Plugins::attribute( $formsField->plugin, 'dataSourceView' );
-        $dataSource     = \Plugins::attribute( $formsField->plugin, 'dataSource' );
+        $dataSourceView = \Plugins::attribute( $plugin, 'dataSourceView' );
+        $dataSource     = \Plugins::attribute( $plugin, 'dataSource' );
 
         if ( $dataSourceView ) {
-            return \Plugins::method( $formsField->plugin, $dataSource );
+            return \Plugins::method( $plugin, $dataSource );
         } else {
-            \Plugins::register( 'prettyJSON', '\App\Plugins\PrettyJSON\PrettyJSON' );
+            \Plugins::register( 'PrettyJSON', '\App\Plugins\PrettyJSON\PrettyJSON' );
 
             return View( 'Backend.Form.List' )->with( [
                 'forms' => $forms
