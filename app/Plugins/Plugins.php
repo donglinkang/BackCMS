@@ -64,10 +64,10 @@ class Plugins
                 $properties = $class->getDefaultProperties();
 
                 return $properties[ $attr ];
-            } else {
-                return false;
             }
         }
+
+        return null;
     }
 
     public function method( $name, $dataSource )
@@ -78,9 +78,9 @@ class Plugins
             $instance = $class->newInstanceArgs();
 
             return $instance->$dataSource();
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     public function view( $name, $dataSourceView )
@@ -88,7 +88,7 @@ class Plugins
         $name = ucfirst( $name );
 
         if ( $this->exists( $name ) ) {
-            $dataSourceView = dirname( __FILE__ ) . DIRECTORY_SEPARATOR . ucfirst( $name ) . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . $dataSourceView;
+            $dataSourceView = dirname( __FILE__ ) . DIRECTORY_SEPARATOR . $name . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . $dataSourceView;
 
             /*// let's add /app/custom_views via namespace
             view()->addNamespace( 'my_views', app_path( 'custom_views' ) );
