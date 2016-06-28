@@ -11,7 +11,7 @@ class PageController extends Controller
 {
     public function getShow( $id )
     {
-        $page = \App\Page::find( $id );
+        $page = \App\Models\Page::find( $id );
 
         if ( $page->enabled == 0 ) abort( 404 );
 

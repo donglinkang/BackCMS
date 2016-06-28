@@ -67,7 +67,7 @@ class Authorize
             'unique'   => '信息已经存在了',
         ] );
 
-        $user           = new \App\User;
+        $user           = new \App\Models\User;
         $user->username = $username;
         $user->password = \Hash::make( $password );
         $user->email    = $email;
@@ -96,7 +96,7 @@ class Authorize
 
     public function getList()
     {
-        $users = \App\User::all();
+        $users = \App\Models\User::all();
 
         return \Plugins::view( class_basename( __CLASS__ ), $this->dataSourceView )->with( [
             'users' => $users
@@ -105,7 +105,7 @@ class Authorize
 
     public function getListJson()
     {
-        $forms = \App\Form::wherePlugin( lcfirst( class_basename( __CLASS__ ) ) )->get();
+        $forms = \App\Models\Form::wherePlugin( lcfirst( class_basename( __CLASS__ ) ) )->get();
 
         return \Plugins::view( class_basename( __CLASS__ ), $this->dataSourceView )->with( [
             'forms' => $forms

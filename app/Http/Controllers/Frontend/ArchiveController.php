@@ -16,7 +16,7 @@ class ArchiveController extends Controller
 
     public function getList( $id )
     {
-        $archiveField = \App\ArchiveField::with( 'getArchive' )->whereId( $id )->first();
+        $archiveField = \App\Models\ArchiveField::with( 'getArchive' )->whereId( $id )->first();
 
         $args = [
             'archiveField' => $archiveField,
@@ -27,7 +27,7 @@ class ArchiveController extends Controller
 
     public function getShow( $id )
     {
-        $archive  = \App\Archive::find( $id );
+        $archive  = \App\Models\Archive::find( $id );
         $args     = json_decode( $archive->body, true );
 
         return compileBlade( $archive->getArchiveField->getShowTemplate->code, $args );

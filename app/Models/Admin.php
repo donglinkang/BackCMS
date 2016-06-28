@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -20,7 +20,7 @@ class Admin extends Authenticatable
 
     public function getAdminPermissionRole()
     {
-        return $this->belongsTo( '\App\AdminPermissionRole', 'admin_permission_role_id' );
+        return $this->belongsTo( '\App\Models\AdminPermissionRole', 'admin_permission_role_id' );
     }
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +11,7 @@ class Archive extends Model
 
     public function getArchiveField()
     {
-        return $this->belongsTo( '\App\ArchiveField', 'archive_field_id' );
+        return $this->belongsTo( '\App\Models\ArchiveField', 'archive_field_id' );
     }
 
 //    public function getBodyAttribute( $value )

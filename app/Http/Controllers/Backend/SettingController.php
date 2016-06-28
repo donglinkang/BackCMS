@@ -18,7 +18,7 @@ class SettingController extends BackendController
     {
         $this->permission();
 
-        $configures = \App\Configure::all();
+        $configures = \App\Models\Configure::all();
 
         return View( 'Backend.Setting.General.Index' )->with( [
             'configures' => $configures
@@ -33,7 +33,7 @@ class SettingController extends BackendController
         $returns = [ ];
 
         foreach ( $inputs as $key => $value ) {
-            $configure        = \App\Configure::whereKey( $key )->first();
+            $configure        = \App\Models\Configure::whereKey( $key )->first();
             $configure->value = $value;
             $returns          = $configure->save();
         }
@@ -63,7 +63,7 @@ class SettingController extends BackendController
         $key   = $request->input( 'key' );
         $value = $request->input( 'value' );
 
-        $configure        = new \App\Configure;
+        $configure        = new \App\Models\Configure;
         $configure->name  = $name;
         $configure->key   = $key;
         $configure->value = $value;
@@ -86,7 +86,7 @@ class SettingController extends BackendController
 
         $id = $request->input( 'id' );
 
-        $configure = \App\Configure::find( $id );
+        $configure = \App\Models\Configure::find( $id );
 
         if ( $configure->delete() )
             return Response()->json( [
@@ -102,7 +102,7 @@ class SettingController extends BackendController
     {
         $this->permission();
 
-        $admins = \App\Admin::all();
+        $admins = \App\Models\Admin::all();
 
         return View( 'Backend.Setting.Admins.Index' )->with( [
             'admins' => $admins,
@@ -113,7 +113,7 @@ class SettingController extends BackendController
     {
         $this->permission();
 
-        $adminPermissionRoles = \App\AdminPermissionRole::all();
+        $adminPermissionRoles = \App\Models\AdminPermissionRole::all();
 
         return View( 'Backend.Setting.Admins.Create' )->with( [
             'adminPermissionRoles' => $adminPermissionRoles
@@ -140,7 +140,7 @@ class SettingController extends BackendController
             'email'    => '邮箱格式错误',
         ] );
 
-        $admin = new \App\Admin;
+        $admin = new \App\Models\Admin;
 
         $admin->username                 = $username;
         $admin->nickname                 = $nickname;
@@ -163,8 +163,8 @@ class SettingController extends BackendController
     {
         $this->permission();
 
-        $admin                = \App\Admin::find( $id );
-        $adminPermissionRoles = \App\AdminPermissionRole::all();
+        $admin                = \App\Models\Admin::find( $id );
+        $adminPermissionRoles = \App\Models\AdminPermissionRole::all();
 
         return View( 'Backend.Setting.Admins.Edit' )->with( [
             'admin'                => $admin,
@@ -192,12 +192,13 @@ class SettingController extends BackendController
             'email'    => '邮箱格式错误',
         ] );
 
-        $admin = \App\Admin::find( $id );
+        $admin = \App\Models\Admin::find( $id );
 
         $admin->username                 = $username;
         $admin->nickname                 = $nickname;
         $admin->email                    = $email;
         $admin->admin_permission_role_id = $adminPermissionRoleId;
+
         if ( !empty( $password ) )
             $admin->password = \Hash::make( $password );
 
@@ -215,19 +216,19 @@ class SettingController extends BackendController
     {
         $this->permission();
 
-        $adminPermissionRoles = \App\AdminPermissionRole::all();
+        $adminPermissionRoles = \App\Models\AdminPermissionRole::all();
         $adminPermissions     = [ ];
         $role                 = null;
 
         if ( !is_null( $roleId ) ) {
-            $role = \App\AdminPermissionRole::whereId( $roleId )->first();
+            $role = \App\Models\AdminPermissionRole::whereId( $roleId )->first();
         } else {
-            $role = \App\AdminPermissionRole::whereName( '超级管理员' )->first();
+            $role = \App\Models\AdminPermissionRole::whereName( '超级管理员' )->first();
         }
-        $adminPermissionIds = \App\AdminPermissionUser::select( 'admin_permission_id' )->whereAdminPermissionRoleId( $role->id )->get()->toArray();
+        $adminPermissionIds = \App\Models\AdminPermissionUser::select( 'admin_permission_id' )->whereAdminPermissionRoleId( $role->id )->get()->toArray();
         $adminPermissionIds = array_flatten( $adminPermissionIds );
 
-        foreach ( \App\AdminPermission::all() as $key => $adminPermission ) {
+        foreach ( \App\Models\AdminPermission::all() as $key => $adminPermission ) {
             list( $adminPermissionComponent, $adminPermissionName ) = explode( '.', $adminPermission->name );
             $adminPermissions[ $adminPermissionComponent ][ $key ] = [
                 'id'       => $adminPermission->id,
@@ -251,7 +252,7 @@ class SettingController extends BackendController
         $label = $request->input( 'label' );
 
         if ( $label ) {
-            $adminPermissionRole       = new \App\AdminPermissionRole;
+            $adminPermissionRole       = new \App\Models\AdminPermissionRole;
             $adminPermissionRole->name = $label;
 
             if ( $adminPermissionRole->save() )
@@ -275,10 +276,10 @@ class SettingController extends BackendController
 
         $ids = $request->input( 'ids' );
 
-        \App\AdminPermissionUser::whereAdminPermissionRoleId( $roleId )->delete();
+        \App\Models\AdminPermissionUser::whereAdminPermissionRoleId( $roleId )->delete();
 
         foreach ( $ids as $id ) {
-            $adminPermissionUser = new \App\AdminPermissionUser;
+            $adminPermissionUser = new \App\Models\AdminPermissionUser;
 
             $adminPermissionUser->admin_permission_id      = $id;
             $adminPermissionUser->admin_permission_role_id = $roleId;
@@ -296,7 +297,7 @@ class SettingController extends BackendController
 
         $roleId = $request->input( 'roleId' );
 
-        $adminPermissionRole = \App\AdminPermissionRole::find( $roleId );
+        $adminPermissionRole = \App\Models\AdminPermissionRole::find( $roleId );
         $adminPermissionRole->getAdminPermissionUser()->delete();
 
         if ( $adminPermissionRole->delete() )
@@ -315,7 +316,7 @@ class SettingController extends BackendController
 
         $id = $request->input( 'id' );
 
-        $admin = \App\Admin::find( $id );
+        $admin = \App\Models\Admin::find( $id );
 
         if ( $admin->username != 'admin' ) {
             if ( $admin->delete() )

@@ -263,7 +263,7 @@ class ManagerController extends BackendController
             $filename        = sprintf( '/%s.%s', str_random( 32 ), $extension );
             $uploadSuccess   = $avatar->move( public_path() . $destinationPath, $filename );
             if ( $uploadSuccess ) {
-                $user         = \App\Admin::find( $id );
+                $user         = \App\Models\Admin::find( $id );
                 $user->avatar = $destinationPath . $filename;
                 $user->save();
 

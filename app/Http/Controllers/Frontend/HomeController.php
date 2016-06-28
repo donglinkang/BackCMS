@@ -16,7 +16,7 @@ class HomeController extends Controller
             return Redirect()->action( 'Frontend\InstallController@getIndex' );
         }
 
-        $template       = \App\Template::whereName( '首页' )->first();
+        $template       = \App\Models\Template::whereName( '首页' )->first();
 
         if ( $template->type == 2 ) {
             return compileBlade($template->code);

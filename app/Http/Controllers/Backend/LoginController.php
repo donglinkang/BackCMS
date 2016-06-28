@@ -45,7 +45,7 @@ class LoginController extends BackendController
 
         if ( $login ) {
 
-            $activity           = new \App\Activity;
+            $activity           = new \App\Models\Activity;
             $activity->guard    = 'admin';
             $activity->content  = '登录系统';
             $activity->admin_id = Auth( 'admin' )->user()->id;
@@ -68,7 +68,7 @@ class LoginController extends BackendController
     public function getLogout()
     {
 
-        $activity           = new \App\Activity;
+        $activity           = new \App\Models\Activity;
         $activity->guard    = 'admin';
         $activity->content  = '安全退出系统';
         $activity->admin_id = Auth( 'admin' )->user()->id;

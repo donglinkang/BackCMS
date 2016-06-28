@@ -14,7 +14,7 @@ class ArchiveController extends BackendController
 
         $fieldIds = [ ];
 
-        $archiveFields = \App\ArchiveField::all();
+        $archiveFields = \App\Models\ArchiveField::all();
 
         foreach ( $archiveFields as $field ) {
             $fieldIds[] = $field->id;
@@ -22,7 +22,7 @@ class ArchiveController extends BackendController
 
         \Plugins::register( 'pagination', 'App\Plugins\Pagination\Pagination' );
 
-        $archives = \App\Archive::whereIn( 'archive_field_id', $fieldIds )->simplePaginate( 20 );
+        $archives = \App\Models\Archive::whereIn( 'archive_field_id', $fieldIds )->simplePaginate( 20 );
 
         return View( 'Backend.Archive.Index' )->with( [
             'archiveFields' => $archiveFields,
@@ -34,7 +34,7 @@ class ArchiveController extends BackendController
     {
         $this->permission();
 
-        $templates = \App\Template::whereType( 2 )->get();
+        $templates = \App\Models\Template::whereType( 2 )->get();
 
         return View( 'Backend.Archive.Create' )->with( [
             'templates' => $templates
@@ -79,7 +79,7 @@ class ArchiveController extends BackendController
                 ] );
             }
         }
-        $archiveField                = new \App\ArchiveField;
+        $archiveField                = new \App\Models\ArchiveField;
         $archiveField->name          = $archiveNames;
         $archiveField->field         = json_encode( $fields );
         $archiveField->list_template = $listTemplate;
@@ -111,8 +111,8 @@ class ArchiveController extends BackendController
     {
         $this->permission();
 
-        $field    = \App\ArchiveField::find( $id );
-        $archives = \App\Archive::whereArchiveFieldId( $field->id )->get();
+        $field    = \App\Models\ArchiveField::find( $id );
+        $archives = \App\Models\Archive::whereArchiveFieldId( $field->id )->get();
 
         return View( 'Backend.Archive.List' )->with( [
             'archives' => $archives,
@@ -124,7 +124,7 @@ class ArchiveController extends BackendController
     {
         $this->permission();
 
-        $field = \App\ArchiveField::find( $id );
+        $field = \App\Models\ArchiveField::find( $id );
 
         $attributes = json_decode( $field->field );
 
@@ -151,7 +151,7 @@ class ArchiveController extends BackendController
         $keywords    = $request->input( 'keywords' );
         $description = $request->input( 'description' );
 
-        $archive = new \App\Archive;
+        $archive = new \App\Models\Archive;
 
         $archive->archive_field_id = $id;
         $archive->title            = $title;
@@ -173,7 +173,7 @@ class ArchiveController extends BackendController
     {
         $this->permission();
 
-        $archive = \App\Archive::find( $id );
+        $archive = \App\Models\Archive::find( $id );
         $field   = $archive->getArchiveField;
 
         \Plugins::register( 'Tags', 'App\Plugins\Tags\Tags' );
@@ -199,7 +199,7 @@ class ArchiveController extends BackendController
         $keywords    = $request->input( 'keywords' );
         $description = $request->input( 'description' );
 
-        $archive = \App\Archive::find( $id );
+        $archive = \App\Models\Archive::find( $id );
 
         $archive->archive_field_id = $id;
         $archive->title            = $title;
@@ -226,7 +226,7 @@ class ArchiveController extends BackendController
         if ( is_array( $ids ) ) {
             $return = [ ];
             foreach ( $ids as $id ) {
-                $archive  = \App\Archive::find( $id );
+                $archive  = \App\Models\Archive::find( $id );
                 $return[] = $archive->delete();
             }
 
@@ -240,7 +240,7 @@ class ArchiveController extends BackendController
                 ] );
             }
         } else {
-            $archive = \App\Archive::find( $ids );
+            $archive = \App\Models\Archive::find( $ids );
 
             if ( $archive->delete() )
                 return Response()->json( [
@@ -258,7 +258,7 @@ class ArchiveController extends BackendController
         $this->permission();
 
         $id           = $request->input( 'id' );
-        $archiveField = \App\ArchiveField::find( $id );
+        $archiveField = \App\Models\ArchiveField::find( $id );
 
         if ( $archiveField->delete() )
             return Response()->json( [

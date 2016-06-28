@@ -11,7 +11,7 @@ class FormController extends BackendController
     {
         $this->permission();
 
-        $formFields = \App\FormField::all();
+        $formFields = \App\Models\FormField::all();
 
         return View( 'Backend.Form.Index' )->with( [
             'formFields' => $formFields
@@ -32,7 +32,7 @@ class FormController extends BackendController
         $name   = $request->input( 'name' );
         $plugin = $request->input( 'plugin' );
 
-        $formField         = new \App\FormField;
+        $formField         = new \App\Models\FormField;
         $formField->name   = $name;
         $formField->plugin = $plugin;
 
@@ -50,7 +50,7 @@ class FormController extends BackendController
     {
         $this->permission();
 
-        $formField = \App\FormField::find( $id );
+        $formField = \App\Models\FormField::find( $id );
 
         return View( 'Backend.Form.Edit' )->with( [
             'formField' => $formField
@@ -64,7 +64,7 @@ class FormController extends BackendController
         $name   = $request->input( 'name' );
         $plugin = $request->input( 'plugin' );
 
-        $formField         = \App\FormField::find( $id );
+        $formField         = \App\Models\FormField::find( $id );
         $formField->name   = $name;
         $formField->plugin = $plugin;
 
@@ -87,7 +87,7 @@ class FormController extends BackendController
         if ( is_array( $ids ) ) {
             $return = [ ];
             foreach ( $ids as $id ) {
-                $formField = \App\FormField::find( $id );
+                $formField = \App\Models\FormField::find( $id );
                 $return[]  = $formField->delete();
             }
 
@@ -101,7 +101,7 @@ class FormController extends BackendController
                 ] );
             }
         } else {
-            $formField = \App\FormField::find( $ids );
+            $formField = \App\Models\FormField::find( $ids );
 
             if ( $formField->delete() )
                 return Response()->json( [
@@ -118,8 +118,8 @@ class FormController extends BackendController
     {
         $this->permission();
 
-        $formsField = \App\FormField::find( $id );
-        $forms      = \App\Form::wherePlugin( $formsField->plugin )->get();
+        $formsField = \App\Models\FormField::find( $id );
+        $forms      = \App\Models\Form::wherePlugin( $formsField->plugin )->get();
         $plugin     = ucfirst( $formsField->plugin );
 
         \Plugins::register( $plugin, '\\App\\Plugins\\' . $plugin . '\\' . $plugin );

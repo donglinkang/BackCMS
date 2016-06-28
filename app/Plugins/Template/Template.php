@@ -18,7 +18,7 @@ class Template
 
             if ( count( $templateMatchers ) >= 2 ) {
                 try {
-                    $template = \App\Template::whereName( $templateMatchers[ 1 ] )->firstOrfail();
+                    $template = \App\Models\Template::whereName( $templateMatchers[ 1 ] )->firstOrfail();
                     $content  = str_replace( $templateMatchers[ 0 ], $template->code, $content );
                     compileBlade( $content );
                 } catch ( \Illuminate\Database\Eloquent\ModelNotFoundException $e ) {

@@ -28,7 +28,7 @@ class LoginController extends Controller
 
         if ( $login ) {
 
-            $activity          = new \App\Activity;
+            $activity          = new \App\Models\Activity;
             $activity->guard   = 'web';
             $activity->content = '登录系统';
             $activity->userid  = Auth( 'web' )->user()->id;
@@ -70,7 +70,7 @@ class LoginController extends Controller
             'unique'   => '信息已经存在了',
         ] );
 
-        $user           = new \App\User;
+        $user           = new \App\Models\User;
         $user->username = $username;
         $user->password = \Hash::make( $password );
         $user->email    = $email;
@@ -95,7 +95,7 @@ class LoginController extends Controller
     public function getLogout()
     {
 
-        $activity          = new \App\Activity;
+        $activity          = new \App\Models\Activity;
         $activity->guard   = 'web';
         $activity->content = '安全退出系统';
         $activity->userid  = Auth( 'web' )->user()->id;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
@@ -16,16 +16,16 @@ class ArchiveField extends Model
 
     public function getArchive()
     {
-        return $this->hasMany('\\App\\Archive');
+        return $this->hasMany('\App\Models\Archive');
     }
 
     public function getListTemplate()
     {
-        return $this->belongsTo( '\App\Template', 'list_template' );
+        return $this->belongsTo( '\App\Models\Template', 'list_template' );
     }
 
     public function getShowTemplate()
     {
-        return $this->belongsTo( '\App\Template', 'show_template' );
+        return $this->belongsTo( '\App\Models\Template', 'show_template' );
     }
 }

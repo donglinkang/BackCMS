@@ -17,7 +17,7 @@ class BootServiceProvider extends ServiceProvider
         if ( \Storage::has('installed') ) {
             $config = [ ];
 
-            foreach ( \App\Configure::all() as $configure ) {
+            foreach ( \App\Models\Configure::all() as $configure ) {
                 $config[ $configure->key ] = $configure->value;
             }
 

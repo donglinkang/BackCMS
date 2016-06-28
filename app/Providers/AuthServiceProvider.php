@@ -29,11 +29,11 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies( $gate );
 
         if ( \Storage::has('installed') ) {
-            $adminPermissions = \App\AdminPermission::all();
+            $adminPermissions = \App\Models\AdminPermission::all();
             foreach ( $adminPermissions as $adminPermission ) {
                 $gate->define( $adminPermission->name, function ( $admin ) use ( $adminPermission ) {
                     $adminPermissionRoute = $admin->getAdminPermissionRole;
-                    $adminPermissionIds   = \App\AdminPermissionUser::select( 'admin_permission_id' )->whereAdminPermissionRoleId( $adminPermissionRoute->id )->get()->toArray();
+                    $adminPermissionIds   = \App\Models\AdminPermissionUser::select( 'admin_permission_id' )->whereAdminPermissionRoleId( $adminPermissionRoute->id )->get()->toArray();
                     $adminPermissionIds   = array_flatten( $adminPermissionIds );
                     if ( in_array( $adminPermission->id, $adminPermissionIds ) || $adminPermissionRoute->name == '超级管理员' ) {
                         return true;

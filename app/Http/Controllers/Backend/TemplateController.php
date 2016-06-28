@@ -11,7 +11,7 @@ class TemplateController extends BackendController
     {
         $this->permission();
 
-        $templates = \App\Template::all();
+        $templates = \App\Models\Template::all();
 
         return View( 'Backend.Template.Index' )->with( [
             'templates' => $templates
@@ -22,8 +22,8 @@ class TemplateController extends BackendController
     {
         $this->permission();
 
-        $templates  = \App\Template::all();
-        $formFields = \App\FormField::all();
+        $templates  = \App\Models\Template::all();
+        $formFields = \App\Models\FormField::all();
 
         return View( 'Backend.Template.Create' )->with( [
             'templates'  => $templates,
@@ -39,7 +39,7 @@ class TemplateController extends BackendController
         $type = $request->input( 'type', 0 );
         $code = $request->input( 'code' );
 
-        $template         = new \App\Template;
+        $template         = new \App\Models\Template;
         $template->name   = $name;
         $template->type   = $type;
         $template->system = 0;
@@ -59,13 +59,13 @@ class TemplateController extends BackendController
     {
         $this->permission();
 
-        $template = \App\Template::find( $id );
+        $template = \App\Models\Template::find( $id );
 
         if ( $request->isXmlHttpRequest() ) {
             return $template;
         } else {
-            $templates  = \App\Template::all();
-            $formFields = \App\FormField::all();
+            $templates  = \App\Models\Template::all();
+            $formFields = \App\Models\FormField::all();
 
             return View( 'Backend.Template.Edit' )->with( [
                 'template'   => $template,
@@ -83,7 +83,7 @@ class TemplateController extends BackendController
         $type = $request->input( 'type', 0 );
         $code = $request->input( 'code' );
 
-        $template       = \App\Template::find( $id );
+        $template       = \App\Models\Template::find( $id );
         $template->name = $name;
         $template->type = $type;
         $template->code = $code;
@@ -107,7 +107,7 @@ class TemplateController extends BackendController
         if ( is_array( $ids ) ) {
             $return = [ ];
             foreach ( $ids as $id ) {
-                $page     = \App\Template::find( $id );
+                $page     = \App\Models\Template::find( $id );
                 $return[] = $page->delete();
             }
 
@@ -121,7 +121,7 @@ class TemplateController extends BackendController
                 ] );
             }
         } else {
-            $page = \App\Template::find( $ids );
+            $page = \App\Models\Template::find( $ids );
 
             if ( $page->delete() )
                 return Response()->json( [

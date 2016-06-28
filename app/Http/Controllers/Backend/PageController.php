@@ -12,7 +12,7 @@ class PageController extends BackendController
     {
         $this->permission();
 
-        $pages = \App\Page::all();
+        $pages = \App\Models\Page::all();
 
         return View( 'Backend.Page.Index' )->with( [
             'pages' => $pages
@@ -28,7 +28,7 @@ class PageController extends BackendController
         if ( is_array( $ids ) ) {
             $return = [ ];
             foreach ( $ids as $id ) {
-                $page     = \App\Page::find( $id );
+                $page     = \App\Models\Page::find( $id );
                 $return[] = $page->delete();
             }
 
@@ -42,7 +42,7 @@ class PageController extends BackendController
                 ] );
             }
         } else {
-            $page = \App\Page::find( $ids );
+            $page = \App\Models\Page::find( $ids );
 
             if ( $page->delete() )
                 return Response()->json( [
@@ -59,13 +59,13 @@ class PageController extends BackendController
     {
         $this->permission();
 
-        $page = \App\Page::find( $id );
+        $page = \App\Models\Page::find( $id );
 
         if ( $request->isXmlHttpRequest() ) {
             return $page;
         } else {
-            $templates = \App\Template::whereType( 1 )->get();
-            $forms     = \App\Form::all();
+            $templates = \App\Models\Template::whereType( 1 )->get();
+            $forms     = \App\Models\Form::all();
 
             return View( 'Backend.Page.Edit' )->with( [
                 'page'      => $page,
@@ -92,7 +92,7 @@ class PageController extends BackendController
             'required' => '必填写内容'
         ] );
 
-        $page          = \App\Page::find( $id );
+        $page          = \App\Models\Page::find( $id );
         $page->title   = $title;
         $page->body    = $body;
         $page->enabled = $enabled;
@@ -112,8 +112,8 @@ class PageController extends BackendController
     {
         $this->permission();
 
-        $templates = \App\Template::whereType( 1 )->get();
-        $forms     = \App\Form::all();
+        $templates = \App\Models\Template::whereType( 1 )->get();
+        $forms     = \App\Models\Form::all();
 
         return View( 'Backend.Page.Create' )->with( [
             'templates' => $templates,
@@ -137,7 +137,7 @@ class PageController extends BackendController
             'required' => '必填写内容'
         ] );
 
-        $page          = new \App\Page;
+        $page          = new \App\Models\Page;
         $page->title   = $title;
         $page->body    = $body;
         $page->enabled = $enabled;
