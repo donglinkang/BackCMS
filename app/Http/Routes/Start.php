@@ -10,14 +10,14 @@ Route::group( [
     'prefix'    => Config()->get( 'route.admin.prefix' ),
     'namespace' => Config()->get( 'route.admin.namespace' ),
 ], function () {
-    include('Backend.php');
+    require('Backend.php');
 } );
 
 Route::group( [
     'prefix'    => Config()->get( 'route.web.prefix' ),
     'namespace' => Config()->get( 'route.web.namespace' )
 ], function () {
-    include('Frontend.php');
+    require('Frontend.php');
 } );
 
 /*
