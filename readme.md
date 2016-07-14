@@ -12,6 +12,7 @@
 ##安装方式
 * 下载文件
 * composer update
+* cp .env.example .env && ./artisan key:generate
 * 编辑 .env 文件中数据库连接
 * 访问 http://xxxxx/ 提示安装
 * 安装成功后,会在 /storage/app 生成 installed 文件
