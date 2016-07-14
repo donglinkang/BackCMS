@@ -20,7 +20,7 @@ class Template
                 try {
                     $template = \App\Models\Template::whereName( $templateMatchers[ 1 ] )->firstOrfail();
                     $content  = str_replace( $templateMatchers[ 0 ], $template->code, $content );
-                    compileBlade( $content );
+                    compileBlade( $content, null, 0 );
                 } catch ( \Illuminate\Database\Eloquent\ModelNotFoundException $e ) {
                     break;
                 }

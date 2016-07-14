@@ -139,6 +139,9 @@
                                 close: function(event) {
                                     var atttibute = $(event.target).parent().parent().parent().parent();
                                     atttibute.remove();
+                                },
+                                group: function() {
+
                                 }
                             }
                         });

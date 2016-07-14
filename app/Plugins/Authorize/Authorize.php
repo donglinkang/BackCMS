@@ -39,7 +39,7 @@ class Authorize
             return Response()->json( [
                 'code'    => 'success',
                 'message' => '登录成功!',
-                'auth'    => Auth( 'admin' )->user()
+                'auth'    => Auth()->user()
             ] );
         } else {
             return Response()->json( [
@@ -57,30 +57,38 @@ class Authorize
         $nickname = Request()->input( 'nickname' );
         $phone    = Request()->input( 'phone' );
 
-        $this->validate( Request(), [
+        $v = Validator( Request()->all(), [
             'username' => 'required|unique:users',
-            'password' => 'required|min:6',
+            'password' => 'required|min:6|confirmed',
             'email'    => 'required|unique:users|email',
             'phone'    => 'required',
         ], [
-            'required' => '必填写内容',
-            'unique'   => '信息已经存在了',
+            'required'  => '必填写内容',
+            'unique'    => '信息已经存在了',
+            'confirmed' => '密码不同'
         ] );
 
-        $user           = new \App\Models\User;
-        $user->username = $username;
-        $user->password = \Hash::make( $password );
-        $user->email    = $email;
-        $user->nickname = $nickname;
-        $user->phone    = $phone;
+        if ( !$v->fails() ) {
+            $user           = new \App\Models\User;
+            $user->username = $username;
+            $user->password = \Hash::make( $password );
+            $user->email    = $email;
+            $user->nickname = $nickname;
+            $user->phone    = $phone;
 
-        if ( $user->save() ) {
-            Auth( 'web' )->login( $user, true );
+            if ( $user->save() ) {
+                Auth( 'web' )->login( $user, true );
 
-            return Response()->json( [
-                'code'    => 'success',
-                'message' => '注册成功!'
-            ] );
+                return Response()->json( [
+                    'code'    => 'success',
+                    'message' => '注册成功!'
+                ] );
+            } else {
+                return Response()->json( [
+                    'code'    => 'error',
+                    'message' => '注册失败!',
+                ] );
+            }
         } else {
             return Response()->json( [
                 'code'    => 'error',
@@ -91,7 +99,17 @@ class Authorize
 
     public function logout()
     {
-
+        if ( Auth()->logout() ) {
+            return Response()->json( [
+                'code'    => 'success',
+                'message' => '退出成功!'
+            ] );
+        } else {
+            return Response()->json( [
+                'code'    => 'error',
+                'message' => '退出失败!',
+            ] );
+        }
     }
 
     public function getList()

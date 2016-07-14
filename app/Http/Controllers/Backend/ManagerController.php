@@ -76,7 +76,7 @@ class ManagerController extends BackendController
 
     public function postCreateFolder( BackendRequest $request )
     {
-        abort(403);
+        abort( 403 );
         $this->permission();
 
         $name = $request->input( 'name' );
@@ -96,7 +96,7 @@ class ManagerController extends BackendController
 
     public function postCreateFile( BackendRequest $request )
     {
-        abort(403);
+        abort( 403 );
         $this->permission();
 
         $name = $request->input( 'name' );
@@ -116,7 +116,7 @@ class ManagerController extends BackendController
 
     public function postOpenFile( BackendRequest $request )
     {
-        abort(403);
+        abort( 403 );
         $this->permission();
 
         $full     = $request->input( 'full' );
@@ -149,7 +149,7 @@ class ManagerController extends BackendController
 
     public function postRenameFile( BackendRequest $request )
     {
-        abort(403);
+        abort( 403 );
         $this->permission();
 
         $oldname = $request->input( 'oldname' );
@@ -170,7 +170,6 @@ class ManagerController extends BackendController
 
     public function postDeleteFile( BackendRequest $request )
     {
-        abort(403);
         $this->permission();
 
         $names = $request->input( 'name' );
@@ -208,7 +207,7 @@ class ManagerController extends BackendController
 
     public function postFile( BackendRequest $request )
     {
-        abort(403);
+        abort( 403 );
         $this->permission();
 
         if ( $request->hasFile( 'files' ) ) {
@@ -270,6 +269,39 @@ class ManagerController extends BackendController
                 return Response()->json( [
                     'code'   => 'success',
                     'avatar' => $user->avatar
+                ] );
+            } else {
+                return Response()->json( [
+                    'code'    => 'error',
+                    'message' => '仅支持jpeg,bmp,png,gif类型'
+                ] );
+            }
+        }
+    }
+
+    public function postImage( BackendRequest $request )
+    {
+        $this->permission();
+
+        $image = $request->file( 'image' );
+
+        $this->validate( $request, [
+            'image' => 'required|image',
+        ], [
+            'required' => '必填写内容',
+            'memes'    => '类型错误'
+        ] );
+
+        if ( $image->isValid() ) {
+            $extension       = $image->getClientOriginalExtension();
+            $destinationPath = '/statics/uploads/images/' . time();
+            $filename        = sprintf( '/%s.%s', str_random( 32 ), $extension );
+            $uploadSuccess   = $image->move( public_path() . $destinationPath, $filename );
+            if ( $uploadSuccess ) {
+
+                return Response()->json( [
+                    'code'  => 'success',
+                    'image' => $destinationPath . $filename
                 ] );
             } else {
                 return Response()->json( [

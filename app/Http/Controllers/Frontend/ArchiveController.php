@@ -19,7 +19,7 @@ class ArchiveController extends Controller
         $archiveField = \App\Models\ArchiveField::with( 'getArchive' )->whereId( $id )->first();
 
         $args = [
-            'archiveField' => $archiveField,
+            'field' => $archiveField,
         ];
 
         return compileBlade( $archiveField->getListTemplate->code, $args );
@@ -27,8 +27,9 @@ class ArchiveController extends Controller
 
     public function getShow( $id )
     {
-        $archive  = \App\Models\Archive::find( $id );
-        $args     = json_decode( $archive->body, true );
+        $archive              = \App\Models\Archive::find( $id );
+        $args                 = json_decode( $archive->body, true );
+        $args[ 'created_at' ] = $archive->created_at;
 
         return compileBlade( $archive->getArchiveField->getShowTemplate->code, $args );
     }

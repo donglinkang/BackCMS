@@ -21,6 +21,12 @@ class Tags
                 return $this->getSelect( $args );
             case 'boolean':
                 return $this->getBoolean( $args );
+            case 'image':
+                return $this->getImage( $args );
+            case 'images':
+                return $this->getImages( $args );
+            case 'template':
+                return $this->getTemplate( $args );
             default:
         }
     }
@@ -55,9 +61,24 @@ class Tags
         return $this->load( 'Boolean', $args );
     }
 
+    protected function getImage( $args )
+    {
+        return $this->load( 'Image', $args );
+    }
+
+    protected function getImages( $args )
+    {
+        return $this->load( 'Images', $args );
+    }
+
     protected function getHtml( $args )
     {
         return $this->load( 'Html', $args );
+    }
+
+    protected function getTemplate( $args )
+    {
+        return $this->load( ucfirst( $args[ 'attach' ]->view ), $args );
     }
 
     protected function load( $view, $args = [ ] )

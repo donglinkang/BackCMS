@@ -53,6 +53,9 @@
                         <option value="select">多选</option>
                         <option value="datetime">日期</option>
                         <option value="time">时间</option>
+                        <option value="image">单图片</option>
+                        <option value="images">多图片</option>
+                        <option value="template">自定义模版</option>
                         {{--<option value="6">Html (WYSIWYG)</option>
                         <option value="7">代码</option>
                         <option value="8">日期</option>
@@ -88,10 +91,11 @@
                         </div>
 
                         <style>
-                            .displayShow{
+                            .displayShow {
                                 display: block;
                             }
-                            .displayHide{
+
+                            .displayHide {
                                 display: none;
                             }
                         </style>
@@ -106,6 +110,15 @@
                             </div>
                         </div>
 
+                        <div class="uk-form-row" v-bind:class="attribute.type == 'template' ? selectshow : selectHide">
+                            <label class="uk-form-label">对应模版</label>
+
+                            <div class="uk-form-controls">
+                                <input class="uk-form-blan uk-width-1-1" type="text" name="attributeTemplate[]"
+                                       placeholder="例如 Text" title="对应解析模版"
+                                       data-uk-tooltip="">
+                            </div>
+                        </div>
 
                     </div>
                 </div>

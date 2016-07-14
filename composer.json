@@ -20,7 +20,7 @@
             "database"
         ],
         "files": [
-            "app/Helper/Function.php",
+            "app/Function/Helper.php",
             "app/Plugins/Plugins.php"
         ],
         "psr-4": {

@@ -97,7 +97,7 @@ class BladeServiceProvider extends ServiceProvider
             return "<?php {$name} = {$value}; ?>";
         } );
 
-        \Blade::directive( 'permission', function ($expression) {
+        \Blade::directive( 'permission', function ( $expression ) {
             return "<?php if(Auth('admin')->user()->can($expression)): ?>";
         } );
 

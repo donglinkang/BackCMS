@@ -53,6 +53,7 @@ class ArchiveController extends BackendController
         $attributeDefaults  = $inputs[ 'attributeDefault' ];
         $attributeRequireds = isset( $inputs[ 'attributeRequired' ] ) ? $inputs[ 'attributeRequired' ] : 0;
         $attributeSelect    = isset( $inputs[ 'attributeSelect' ] ) ? $inputs[ 'attributeSelect' ] : null;
+        $attributeTemplate  = isset( $inputs[ 'attributeTemplate' ] ) ? $inputs[ 'attributeTemplate' ] : null;
         $listTemplate       = $inputs[ 'list_template' ];
         $showTemplate       = $inputs[ 'show_template' ];
 
@@ -76,6 +77,12 @@ class ArchiveController extends BackendController
             if ( $attributeTypes[ $key ] == 'select' ) {
                 $fields[ $key ] = array_merge( $fields[ $key ], [
                     'options' => $attributeSelect[ $key ]
+                ] );
+            }
+
+            if ( $attributeTypes[ $key ] == 'template' ) {
+                $fields[ $key ] = array_merge( $fields[ $key ], [
+                    'view' => $attributeTemplate[ $key ]
                 ] );
             }
         }
@@ -201,11 +208,10 @@ class ArchiveController extends BackendController
 
         $archive = \App\Models\Archive::find( $id );
 
-        $archive->archive_field_id = $id;
-        $archive->title            = $title;
-        $archive->keywords         = $keywords;
-        $archive->description      = $description;
-        $archive->body             = json_encode( $inputs );
+        $archive->title       = $title;
+        $archive->keywords    = $keywords;
+        $archive->description = $description;
+        $archive->body        = json_encode( $inputs );
 
         if ( $archive->save() )
             return Response()->json( [
