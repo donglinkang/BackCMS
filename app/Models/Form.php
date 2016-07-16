@@ -9,4 +9,10 @@ class Form extends Model
 {
     use SoftDeletes;
     //
+
+    public function getField()
+    {
+        return json_decode( $this->body );
+    }
+
 }

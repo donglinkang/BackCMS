@@ -16,6 +16,7 @@ class Forms extends Migration
             $table->increments( 'id' );
             $table->text( 'body' );
             $table->string( 'plugin' );
+            $table->string( 'token', 255 );
             $table->timestamps();
             $table->softDeletes();
         } );

@@ -30,6 +30,7 @@ class ArchiveController extends Controller
         $archive              = \App\Models\Archive::find( $id );
         $args                 = json_decode( $archive->body, true );
         $args[ 'created_at' ] = $archive->created_at;
+        $args[ 'archive_id' ] = $archive->id;
 
         return compileBlade( $archive->getArchiveField->getShowTemplate->code, $args );
     }

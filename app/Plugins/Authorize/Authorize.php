@@ -17,14 +17,16 @@ class Authorize
         $type = Request()->input( 'type' );
 
         if ( $type == 'login' )
-            return $this->login();
+            return $this->postLogin();
         else if ( $type == 'register' )
-            return $this->register();
+            return $this->postRegister();
         else if ( $type == 'logout' )
-            return $this->logout();
+            return $this->getLogout();
+        else if ( $type == 'welcome' )
+            return $this->getWelcome();
     }
 
-    public function login()
+    protected function postLogin()
     {
         $username = Request()->input( 'username' );
         $password = Request()->input( 'password' );
@@ -49,7 +51,7 @@ class Authorize
         }
     }
 
-    public function register()
+    protected function postRegister()
     {
         $username = Request()->input( 'username' );
         $password = Request()->input( 'password' );
@@ -97,19 +99,16 @@ class Authorize
         }
     }
 
-    public function logout()
+    protected function getLogout()
     {
-        if ( Auth()->logout() ) {
-            return Response()->json( [
-                'code'    => 'success',
-                'message' => '退出成功!'
-            ] );
-        } else {
-            return Response()->json( [
-                'code'    => 'error',
-                'message' => '退出失败!',
-            ] );
-        }
+        Auth()->logout();
+
+        return Redirect()->to('/');
+    }
+
+    protected function getWelcome()
+    {
+        return compileBlade( template( '会员中心-首页' )->code, null );
     }
 
     public function getList()

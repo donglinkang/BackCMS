@@ -129,6 +129,11 @@ class FormController extends BackendController
 
         if ( $dataSourceView ) {
             return \Plugins::method( $plugin, $dataSource );
+        } elseif ( $dataSource === false ) {
+            return View( 'Error.Message' )->with( [
+                'code'    => 204,
+                'message' => '插件不需要数据回显数据!'
+            ] );
         } else {
             \Plugins::register( 'PrettyJSON', '\App\Plugins\PrettyJSON\PrettyJSON' );
 

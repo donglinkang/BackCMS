@@ -30,27 +30,27 @@ function select( $type, $name, $limit = null, $not = false )
 
     if ( $type == 'archive' ) {
         if ( is_array( $name ) ) {
-            $datas = new \App\Models\ArchiveField;
+            $archiveFields = new \App\Models\ArchiveField;
             foreach ( $name as $where ) {
                 if ( !$not )
-                    $datas = $datas->whereName( $where );
+                    $archiveFields = $archiveFields->whereName( $where );
                 else
-                    $datas = $datas->where( 'name', '!=', $where );
+                    $archiveFields = $archiveFields->where( 'name', '!=', $where );
             }
 
-            $datas = $datas->first()->getArchive;
+            $archiveFields = $archiveFields->first()->getArchive;
         } else {
             if ( !$not )
-                $datas = \App\Models\ArchiveField::where( 'name', '!=', $name )->first()->getArchive;
+                $archiveFields = \App\Models\ArchiveField::where( 'name', '!=', $name )->first()->getArchive;
             else
-                $datas = \App\Models\ArchiveField::where( 'name', '!=', $name )->first()->getArchive;
+                $archiveFields = \App\Models\ArchiveField::where( 'name', '!=', $name )->first()->getArchive;
         }
 
         if ( !is_null( $limit ) ) {
-            $datas = $datas->take( $limit );
+            $archiveFields = $archiveFields->take( $limit );
         }
 
-        foreach ( $datas as $key => $data ) {
+        foreach ( $archiveFields as $key => $data ) {
             $select[ $key ][ 'id' ]          = $data->id;
             $select[ $key ][ 'title' ]       = $data->title;
             $select[ $key ][ 'keywords' ]    = $data->keywords;
@@ -68,49 +68,106 @@ function select( $type, $name, $limit = null, $not = false )
     return $select;
 }
 
+function template( $name )
+{
+    $template = \App\Models\Template::whereName( $name )->first();
+
+    return $template;
+}
+
+function selectById( $ids, $not = false )
+{
+    $archive = new \App\Models\Archive;
+
+    if ( is_array( $ids ) ) {
+        if ( $not ) {
+            $archive = $archive->whereIn( 'id', $ids );
+        } else {
+            $archive = $archive->whereNotIn( 'id', $ids );
+        }
+    } else {
+        if ( $not ) {
+            $archive = $archive->whereId( 'id', '!=', $ids );
+        } else {
+            $archive = $archive->whereId( $ids );
+        }
+    }
+
+    return $archive = $archive->get();
+
+    return $archive;
+}
+
 function category( $type, $name, $limit = null, $not = false )
 {
-    $datas    = null;
-    $category = [ ];
+    $datas = null;
 
     $type = strtolower( $type );
 
     if ( $type == 'archive' ) {
         if ( is_array( $name ) ) {
-            $datas = new \App\Models\ArchiveField;
+            $archiveField = new \App\Models\ArchiveField;
             foreach ( $name as $where ) {
                 if ( !$not )
-                    $datas = $datas->whereName( $where );
+                    $archiveField = $archiveField->whereName( $where );
                 else
-                    $datas = $datas->where( 'name', '!=', $where );
+                    $archiveField = $archiveField->where( 'name', '!=', $where );
             }
 
-            $datas = $datas->get();
+            $archiveField = $archiveField->get();
         } else {
             if ( !$not )
-                $datas = \App\Models\ArchiveField::where( 'name', '!=', $name )->get();
+                $archiveField = \App\Models\ArchiveField::where( 'name', '!=', $name )->get();
             else
-                $datas = \App\Models\ArchiveField::where( 'name', '!=', $name )->get();
+                $archiveField = \App\Models\ArchiveField::where( 'name', '!=', $name )->get();
         }
 
         if ( !is_null( $limit ) ) {
-            $datas = $datas->take( $limit );
+            $archiveField = $archiveField->take( $limit );
         }
     }
 
-    return $datas;
+    return $archiveField;
 }
 
 function breadcrumb()
 {
-    $home       = '<li><a href="/">首页</a></li>';
-    $breadcrumb = null;
+    $home         = '<li><a href="/">首页</a></li>';
+    $brehwadcrumb = null;
 
     list( $controller, $action ) = Request()->segments();
 
-    $breadcrumb = $home .$breadcrumb;
+    $breadcrumb = $home . $brehwadcrumb;
 
     return $breadcrumb;
+}
+
+function configures( $type = 'all', $names = null )
+{
+    $configures = new \App\Models\Configure;
+
+    $configures = $configures->select( [ 'key', 'value', 'name' ] );
+
+    if ( $type == 'system' ) {
+        $configures = $configures->whereType( 1 );
+    } else if ( $type == 'user' ) {
+        $configures = $configures->whereType( 0 );
+    }
+
+    if ( !is_null( $names ) && is_array( $names ) ) {
+        foreach ( $names as $key => $value ) {
+            $configures = $configures->orWhere( 'name', '=', $value );
+        }
+    }
+
+    $configures = $configures->get();
+
+    return $configures;
+}
+
+function loopArray( $str, $delimiter = '|' )
+{
+    return explode( $delimiter, $str );
 }
 
 function version()
